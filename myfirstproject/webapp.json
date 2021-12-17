@@ -1,0 +1,35 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {},
+    "functions": [],
+    "variables": {
+        "asp-name": "appser",
+        "web-app": "webapp201504"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Web/serverfarms",
+            "apiVersion": "2019-08-01",
+            "location":"[resourceGroup().location]",
+            "sku": {
+                "name": "F1"
+            },
+            "name":"[variables('asp-name')]"
+             },
+             {
+                 "type": "Microsoft.Web/sites",
+                 "apiVersion": "2019-08-01",
+                 "name": "[variables('web-app')]",
+                 "location":"[resourceGroup().location]",
+                 "properties": {
+                     "enabled": true,
+                     "serverFarmId": "[resourceId('Microsoft.Web/serverfarms',variables('asp-name'))]"
+                 },
+                 "dependsOn": [
+                     "[resourceId('Microsoft.Web/serverfarms', variables('asp-name'))]"
+                 ]
+             }
+    ],
+    "outputs": {}
+}
